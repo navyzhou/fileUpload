@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>文件上传</title>
+<link rel="shortcut icon" type="image/x-icon" href="images/logo.png" />
+<style>
+	li{
+		list-style-type:none;
+		line-height:30px;
+	}
+	
+	label{
+		display:inline-block;
+		width:100px;
+		text-align:right;
+	}
+</style>
+<script type="text/javascript" src="js/jquery-1.12.4.js"></script>
+<script type="text/javascript" src="js/showPic.js"></script>
+<script type="text/javascript" src="js/ajaxfileupload.js"></script>
+<script type="text/javascript">
+
+function uploadFile(op){
+	var uname=$.trim($("#uname").val());
+	
+	$.ajaxFileUpload({
+		url:"userInfo?op="+op,
+		secureuri:false,
+		fileElementId:["photo","fileInfo"],
+		dataType:"text",
+		data:{uname:uname},
+		success:function(data,status){
+			data=$.trim(data);
+			if(data=="1"){
+				alert("文件上传成功...");
+				$("#myform")[0].reset();
+				$("#showPic").html("");
+			}else{
+				alert("文件上传失败...");
+			}
+		},
+		error:function(data,status,e){
+			//alert("文件上传失败..."+e);
+		}
+	});
+}
+</script>
+</head>
+<body>
+	<form id="myform">
+		<ul>
+			<li><label for="uname">用户名：</label><input type="text" name="uname" id="uname"></li> 
+			<li><label for="photo">图像：</label><input type="file" name="photo" multiple="multiple" id="photo"  onchange="setImagePreviews(this,'showPic')"></li>
+			<li>
+				<div id="showPic"></div>
+			</li>
+			<li>
+				<input type="button" value="上传" onclick="uploadFile('myUpload')"/>
+			</li>
+		</ul>
+	</form>
+</body>
+</html>
